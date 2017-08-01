@@ -1230,17 +1230,17 @@ void delete_chunks() {
     State *states[3] = {s1, s2, s3};
     for (int i = 0; i < count; i++) {
         Chunk *chunk = g->chunks + i;
-        int delete = 1;
+        bool chunkdelete = true;
         for (int j = 0; j < 3; j++) {
             State *s = states[j];
             int p = chunked(s->x);
             int q = chunked(s->z);
             if (chunk_distance(chunk, p, q) < g->delete_radius) {
-                delete = 0;
+            	chunkdelete = false;
                 break;
             }
         }
-        if (delete) {
+        if (chunkdelete) {
             map_free(&chunk->map);
             map_free(&chunk->lights);
             sign_list_free(&chunk->signs);
@@ -1397,9 +1397,9 @@ void ensure_chunks_worker(Player *player, Worker *worker) {
                 other = find_chunk(chunk->p + dp, chunk->q + dq);
             }
             if (other) {
-                Map *block_map = malloc(sizeof(Map));
+                Map *block_map = (Map*)malloc(sizeof(Map));
                 map_copy(block_map, &other->map);
-                Map *light_map = malloc(sizeof(Map));
+                Map *light_map = (Map*)malloc(sizeof(Map));
                 map_copy(light_map, &other->lights);
                 item->block_maps[dp + 1][dq + 1] = block_map;
                 item->light_maps[dp + 1][dq + 1] = light_map;

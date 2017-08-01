@@ -1,7 +1,9 @@
 #include <string.h>
 #include "db.h"
 #include "ring.h"
-#include "sqlite3.h"
+extern "C" {
+	#include "sqlite3.h"
+}
 #include "tinycthread.h"
 
 static int db_enabled = 0;
@@ -34,6 +36,17 @@ void db_disable() {
 
 int get_db_enabled() {
     return db_enabled;
+}
+
+void db_worker_start(char *path) {
+    if (!db_enabled) {
+        return;
+    }
+    ring_alloc(&ring, 1024);
+    mtx_init(&mtx, mtx_plain);
+    mtx_init(&load_mtx, mtx_plain);
+    cnd_init(&cnd);
+    thrd_create(&thrd, db_worker_run, path);
 }
 
 int db_init(char *path) {
@@ -484,17 +497,6 @@ void _db_set_key(int p, int q, int key) {
     sqlite3_bind_int(set_key_stmt, 2, q);
     sqlite3_bind_int(set_key_stmt, 3, key);
     sqlite3_step(set_key_stmt);
-}
-
-void db_worker_start(char *path) {
-    if (!db_enabled) {
-        return;
-    }
-    ring_alloc(&ring, 1024);
-    mtx_init(&mtx, mtx_plain);
-    mtx_init(&load_mtx, mtx_plain);
-    cnd_init(&cnd);
-    thrd_create(&thrd, db_worker_run, path);
 }
 
 void db_worker_stop() {

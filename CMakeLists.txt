@@ -2,18 +2,18 @@ cmake_minimum_required(VERSION 2.8)
 
 project(craft)
 
-FILE(GLOB SOURCE_FILES src/*.c)
+FILE(GLOB SOURCE_FILES src/*.cpp)
 
 add_executable(
     craft
     ${SOURCE_FILES}
-    deps/glew/src/glew.c
-    deps/lodepng/lodepng.c
-    deps/noise/noise.c
+    deps/glew/src/glew.cpp
+    deps/lodepng/lodepng.cpp
+    deps/noise/noise.cpp
     deps/sqlite/sqlite3.c
-    deps/tinycthread/tinycthread.c)
+    deps/tinycthread/tinycthread.cpp)
 
-add_definitions(-std=c99 -O3)
+add_definitions(-lstdc++)
 
 add_subdirectory(deps/glfw)
 include_directories(deps/glew/include)
