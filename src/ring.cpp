@@ -1,12 +1,13 @@
 #include <stdlib.h>
 #include <string.h>
+#include <iostream>
 #include "ring.h"
 
 void ring_alloc(Ring *ring, int capacity) {
     ring->capacity = capacity;
     ring->start = 0;
     ring->end = 0;
-    ring->data = (RingEntry *)calloc(capacity, sizeof(RingEntry));
+    ring->data = (RingEntry*)calloc(capacity, sizeof(RingEntry));
 }
 
 void ring_free(Ring *ring) {
@@ -18,6 +19,7 @@ int ring_empty(Ring *ring) {
 }
 
 int ring_full(Ring *ring) {
+    std::cout << ring->capacity;
     return ring->start == (ring->end + 1) % ring->capacity;
 }
 

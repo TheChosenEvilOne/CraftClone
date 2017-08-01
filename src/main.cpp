@@ -418,8 +418,7 @@ Player *find_player(int id) {
     return 0;
 }
 
-void update_player(Player *player,
-    float x, float y, float z, float rx, float ry, int interpolate)
+void update_player(Player *player,float x, float y, float z, float rx, float ry, int interpolate)
 {
     if (interpolate) {
         State *s1 = &player->state1;
@@ -541,7 +540,7 @@ int chunk_distance(Chunk *chunk, int p, int q) {
     return MAX(dp, dq);
 }
 
-int chunk_visible(float planes[6][4], int p, int q, int miny, int maxy) {
+int chunk_visible(float planes[6][4], int p, int q, float miny, float maxy) {
     int x = p * CHUNK_SIZE - 1;
     int z = q * CHUNK_SIZE - 1;
     int d = CHUNK_SIZE + 1;
@@ -2947,6 +2946,7 @@ int main(int argc, char **argv) {
                 running = 0;
                 break;
             }
+
             if (g->mode_changed) {
                 g->mode_changed = 0;
                 break;
