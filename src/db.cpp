@@ -1,9 +1,7 @@
 #include <string.h>
 #include "db.h"
 #include "ring.h"
-extern "C" {
-	#include "sqlite3.h"
-}
+#include "sqlite3.h"
 #include "tinycthread.h"
 
 static int db_enabled = 0;
