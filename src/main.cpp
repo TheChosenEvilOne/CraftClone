@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <iostream>
 #include "auth.h"
 #include "client.h"
 #include "config.h"
@@ -19,6 +20,7 @@
 #include "tinycthread.h"
 #include "util.h"
 #include "world.h"
+#include "crafting.h"
 
 #define MAX_CHUNKS 8192
 #define MAX_PLAYERS 128
@@ -2275,6 +2277,7 @@ void on_key(GLFWwindow *window, int key, int scancode, int action, int mods) {
         {
             if ((get_block(s->x, s->y - 1, s->z) && !is_plant(get_block(s->x, s->y - 1, s->z))) && (!get_block(s->x, s->y, s->z) || is_plant(get_block(s->x, s->y, s->z))) ) {
                 set_block(s->x, s->y, s->z, 24);
+                record_block(s->x, s->y, s->z, 24);
             }
         }
     }
@@ -2735,6 +2738,8 @@ int main(int argc, char **argv) {
     // OUTER LOOP //
     int running = 1;
     while (running) {
+        // CRAFTING INITIALIZATION
+        //init_crafting();
         // DATABASE INITIALIZATION //
         if (g->mode == MODE_OFFLINE || USE_CACHE) {
             db_enable();

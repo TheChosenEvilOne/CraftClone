@@ -13,7 +13,7 @@ add_executable(
     deps/sqlite/sqlite3.c
     deps/tinycthread/tinycthread.cpp)
 
-add_definitions(-lstdc++ -g)
+add_definitions(-lstdc++ -g -std=c++11)
 
 add_subdirectory(deps/glfw)
 include_directories(deps/glew/include)
